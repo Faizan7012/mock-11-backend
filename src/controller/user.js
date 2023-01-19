@@ -49,18 +49,17 @@ const loginUser = async(req, res)=>{
     const {email, password} = req.body;
      try{
        let find = User.find({email , password})  
-       if(find.length > 0){
+       if(find.length <= 0){
          res.send({
              status:false,
              message:'Email or password is incorrect!'
          })
        }
        else{
-        let isPresent = await User.findOne({email})
-        bcrypt.compare(password, isPresent.password, function (err, result) {
+        bcrypt.compare(password, find[0].password, function (err, result) {
             if (result) {
               const token = jwt.sign(
-                { userID: isPresent._id },
+                { userID: isPresent[0]._id },
                   "top_secret_key",
                 { expiresIn: "7d" }
               );

@@ -48,7 +48,7 @@ const createUser = async(req, res)=>{
 const loginUser = async(req, res)=>{
     const {email, password} = req.body;
      try{
-       let find =await User.find({email , password})  
+       let find =await User.find({email})  
        if(find.length <= 0){
          res.send({
              status:false,

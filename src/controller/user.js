@@ -2,9 +2,9 @@ const User = require("../model/user")
 const jwt = require('jsonwebtoken')
 const bcrypt = require("bcrypt");
 const createUser = async(req, res)=>{
-   const {email, password , name } = req.body;
+   const {email,password ,name } = req.body;
     try{
-      let find = User.find({email})  
+      let find = await User.find({email})  
       if(find.length > 0){
         res.send({
             status:false,
@@ -20,7 +20,7 @@ const createUser = async(req, res)=>{
                 })
             } else {
               try{
-                let user = await User.create({name,email, password :hash});
+                let user = await User.create({name,email, password:hash});
                 res.send({
                     status:true,
                     message:'Your Account is created successfully',
@@ -28,7 +28,7 @@ const createUser = async(req, res)=>{
                 })
               }
               catch(e){
-                res.send({status:false , message: 'Email already exists !'})
+                res.send({status:false , message:e.message})
               }
             }
       })
@@ -48,7 +48,7 @@ const createUser = async(req, res)=>{
 const loginUser = async(req, res)=>{
     const {email, password} = req.body;
      try{
-       let find = User.find({email , password})  
+       let find =await User.find({email , password})  
        if(find.length <= 0){
          res.send({
              status:false,
@@ -59,7 +59,7 @@ const loginUser = async(req, res)=>{
         bcrypt.compare(password, find[0].password, function (err, result) {
             if (result) {
               const token = jwt.sign(
-                { userID: isPresent[0]._id },
+                { userID: find[0]._id },
                   "top_secret_key",
                 { expiresIn: "7d" }
               );

@@ -63,7 +63,7 @@ const loginUser = async(req, res)=>{
                   "top_secret_key",
                 { expiresIn: "7d" }
               );
-              res.send({ status : true , message: "Login Successfully ! ", token: token });
+              res.send({ status : true , message: "Login Successfully ! ", token: token , user:find[0] });
             } else if (err) {
               res.send({ status:false ,  message: 'Your password is incorrect' });
             }

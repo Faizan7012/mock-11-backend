@@ -5,6 +5,8 @@ const userS = new Schema({
     email: { type: String, required: true , unique:true},
     password :{type:String , required :true },
 
+},{
+    versionKey:false , timestamps:true
 })
 
 const User = model('user', userS);

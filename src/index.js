@@ -14,6 +14,33 @@ app.get('/',async(req, res)=>{
     res.send('hello')
 })
 
+app.post('/',(req, res)=>{
+    const {invest , time , roi} = req.body
+    try{
+    let totalI = invest*time ;
+    let i = roi/100;
+    let y = (1+i)**time;
+    let z = y-1;
+    let x = z/i;
+    let totalM = Math.floor(invest*x);
+    let TotalIG = Math.floor(totalM - totalI);
+    res.send({
+        status:true , 
+        message:'Calculated sucessfully',
+        totalI,
+        totalM,
+        TotalIG
+    })
+    }
+    catch(e){
+        res.send({
+            status:false,
+            message:'Something went wrong please try again later !'
+        })
+    }
+   
+})
+
 
 
 app.listen(8080 , async()=>{
